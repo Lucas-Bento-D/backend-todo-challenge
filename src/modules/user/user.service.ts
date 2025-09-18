@@ -2,22 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
-import { LoginUserDto } from './dto/login-user.dto';
-import { JwtService } from '@nestjs/jwt';
+import { AuthService } from 'src/security/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  saltOrRounds: number = 12
 
   constructor(
-    private jwtService: JwtService,
-    private prisma: PrismaService) { }
+    private prisma: PrismaService,
+    private authService: AuthService
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const { email, confirmEmail, password, name } = createUserDto
-    const salt = await bcrypt.genSalt(this.saltOrRounds)
-    const passHash = await bcrypt.hash(password, salt)
+
+    const passHash = await this.authService.encryptPassword(password)
 
     if (confirmEmail !== email) {
       return "The emails aren`t equals"
@@ -71,25 +69,5 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
-  }
-
-  async login(LoginUser: LoginUserDto){
-    const {email, password} = LoginUser
-    if(password === undefined) return "nao tem senha"
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email,
-      }
-    })
-    if (!user) return "User not exists"
-    const checkedPassword = await bcrypt.compare(password, user?.password)
-    if(!checkedPassword) return "senha errada"
-    try {
-      const payload = { id: user.id }
-      const token = await this.jwtService.signAsync(payload)
-      return token
-    } catch (error) {
-      return error
-    }
   }
 }
