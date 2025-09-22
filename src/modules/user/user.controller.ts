@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from 'src/security/auth/auth.guard';
+import { User } from './decorators/user.decorator';
+import type { UserDecorator } from './types/UserDecorator';
 
 
 @Controller({ path: 'user', version: '1' })
@@ -18,8 +21,9 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@User() {id}: UserDecorator) {
     return this.userService.findOne(+id);
   }
 
