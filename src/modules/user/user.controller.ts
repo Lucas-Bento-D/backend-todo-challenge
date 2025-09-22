@@ -27,13 +27,15 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@User() {id}: UserDecorator, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@User() {id}: UserDecorator) {
     return this.userService.remove(+id);
   }
 
