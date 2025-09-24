@@ -32,8 +32,14 @@ export class TaskService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(userId: number, taskId: number) {
+    const task = await this.prisma.task.findUnique({
+      where: {
+        id: taskId,
+        userId
+      }
+    })
+    return task;
   }
 
   update(id: number, updateTaskDto: UpdateTaskDto) {

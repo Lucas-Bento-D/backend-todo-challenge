@@ -22,9 +22,10 @@ export class TaskController {
     return this.taskService.findAll(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskService.findOne(+id);
+  @UseGuards(AuthGuard)
+  @Get(':taskId')
+  findOne(@User() {id}: UserDecorator, @Param('taskId') taskId: string) {
+    return this.taskService.findOne(+id, +taskId);
   }
 
   @Patch(':id')
