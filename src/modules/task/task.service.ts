@@ -24,8 +24,12 @@ export class TaskService {
     return task;
   }
 
-  findAll() {
-    return `This action returns all task`;
+  async findAll(userId: number) {
+    return await this.prisma.task.findMany({
+      where: {
+        userId
+      }
+    });
   }
 
   findOne(id: number) {

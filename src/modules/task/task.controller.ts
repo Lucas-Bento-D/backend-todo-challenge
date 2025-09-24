@@ -16,9 +16,10 @@ export class TaskController {
     return this.taskService.create(id, createTaskDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  findAll(@User() {id}: UserDecorator) {
+    return this.taskService.findAll(+id);
   }
 
   @Get(':id')
