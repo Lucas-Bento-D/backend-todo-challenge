@@ -1,1 +1,3 @@
-export class CreateTaskDto {}
+import { TaskDto } from "./task.dto";
+
+export class CreateTaskDto extends TaskDto {}

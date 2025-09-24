@@ -11,17 +11,18 @@ export class TaskDto extends Timestamp {
     title: string
 
     @IsString()
-    description?: String
+    description?: string
 
     @IsString()
     status?: StatusType
 
+    @IsNotEmpty()
     @IsNumber()
-    UserId: number
+    userId: number
 }
 
-enum StatusType {
-    PENDING,
-    IN_PROGRESS,
-    COMPLETED
+export enum StatusType {
+    PENDING = "PENDING",
+    IN_PROGRESS = "IN_PROGRESS",
+    COMPLETED = "COMPLETED"
 }
