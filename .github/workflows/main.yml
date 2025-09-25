@@ -17,10 +17,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_KEY }}
-
-      - name: Debug docker whoami
-        run: docker info && docker whoami
-
           
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.2.0
