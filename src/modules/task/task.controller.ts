@@ -28,9 +28,10 @@ export class TaskController {
     return this.taskService.findOne(+id, +taskId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
+  @UseGuards(AuthGuard)
+  @Patch(':taskId')
+  update(@User() {id}: UserDecorator, @Param('taskId') taskId: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return this.taskService.update(+id, +taskId, updateTaskDto);
   }
 
   @Delete(':id')

@@ -42,8 +42,22 @@ export class TaskService {
     return task;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(userId: number, id: number, updateTaskDto: UpdateTaskDto) {
+    const {title, description, status} = updateTaskDto
+    const updateTask = {title, description, status, updatedAt: new Date()}
+    const task = await this.prisma.task.findUnique({
+      where: {
+        id,
+        userId
+      }
+    }) 
+    const updatedTask = await this.prisma.task.update({
+      where: {
+        id,
+      },
+      data: {...task, ...updateTask}
+    })
+    return updatedTask;
   }
 
   remove(id: number) {
