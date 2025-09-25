@@ -11,7 +11,7 @@ import type { UserDecorator } from './types/UserDecorator';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -22,13 +22,13 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id')
+  @Get('get/:id')
   findOne(@User() {id}: UserDecorator) {
     return this.userService.findOne(+id);
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
+  @Patch('update/:id')
   update(@User() {id}: UserDecorator, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
