@@ -56,7 +56,7 @@ export class UserService {
     if (!user) return "User not exists"
 
     const updateUser = {
-      email, password, name
+      email, password, name, updatedAt: new Date()
     }
     const updatedUser = this.prisma.user.update({
       where: {
