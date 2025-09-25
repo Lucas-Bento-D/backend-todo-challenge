@@ -11,25 +11,25 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @UseGuards(AuthGuard)
-  @Post()
+  @Post('create')
   create(@User() {id}: UserDecorator, @Body() createTaskDto: CreateTaskDto) {
     return this.taskService.create(id, createTaskDto);
   }
 
   @UseGuards(AuthGuard)
-  @Get()
+  @Get('get-all')
   findAll(@User() {id}: UserDecorator) {
     return this.taskService.findAll(+id);
   }
 
   @UseGuards(AuthGuard)
-  @Get(':taskId')
+  @Get('get/:taskId')
   findOne(@User() {id}: UserDecorator, @Param('taskId') taskId: string) {
     return this.taskService.findOne(+id, +taskId);
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':taskId')
+  @Patch('update/:taskId')
   update(@User() {id}: UserDecorator, @Param('taskId') taskId: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.taskService.update(+id, +taskId, updateTaskDto);
   }
