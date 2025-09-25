@@ -39,18 +39,24 @@ export class TaskService {
         userId
       }
     })
+    if(!task) return "task not exist"
     return task;
   }
 
   async update(userId: number, id: number, updateTaskDto: UpdateTaskDto) {
     const {title, description, status} = updateTaskDto
     const updateTask = {title, description, status, updatedAt: new Date()}
+
+    
     const task = await this.prisma.task.findUnique({
       where: {
         id,
         userId
       }
     }) 
+
+    if(!task) return "task not exist"
+
     const updatedTask = await this.prisma.task.update({
       where: {
         id,
